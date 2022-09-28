@@ -1,15 +1,16 @@
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Admin extends ConnexionDB{
     private String username;
     private String password;
     private String email;
+    protected String arrayVide[][] = new String[0][0];
     protected ArrayList<String> arr = new ArrayList<String>();
-    protected int l = 3;
-    protected int c = 3;
-    protected String[][] arr2 = new String[l][c];
 
     public Admin()
     {
@@ -36,61 +37,78 @@ public class Admin extends ConnexionDB{
     public String[][] selectAllAccounts(String table)
     {
         try{
-            this.stmt = this.conn.prepareStatement("select count(*) as countRow from " + table);
-            ResultSet rsCount = stmt.executeQuery();
-            rsCount.next();
-            int count = rsCount.getInt("countRow");
-            System.out.println(count);
-            rsCount.beforeFirst();
+            this.stmt = this.conn.prepareStatement("select * from " + table);
+            ResultSet rs = stmt.executeQuery();
+            int a = getNumberRows(table);
+            int b = getNumberColumn(table);
+            String[][] arr2 = new String[a][b];
+
             int i = 0;
-            /*while(rs.next())
+            while(rs.next())
             {
-                for(int j = 0; j < rs.getMetaData().getColumnCount(); j++)
+                for(int j = 0; j < b; j++)
                 {
                     arr2[i][j] = rs.getString(j+1);
                 }
                 i++;
             }
-            rs.close();*/
+            rs.close();
             return arr2;
         }catch (Exception e)
         {
             System.out.println("error => " + e);
-            return arr2;
+            return arrayVide;
         }
     }
-    public void setL(int l)
-    {
-        this.l = l;
-    }
-    public void setC(int c)
-    {
-        this.c = c;
-    }
 
-// Display account by id
-    public ArrayList<String> selectOneAccount(String table, int id)
-    {
+ // Display account by id
+//    public ArrayList<String> selectAllAccount(String table)
+//    {
+//        try{
+//            this.stmt = this.conn.prepareStatement("select * from " + table);
+//            ResultSet rsCount = stmt.executeQuery();
+//
+//
+//        }catch (Exception e)
+//        {
+//            System.out.println("error => " + e);
+//            return arr;
+//        }
+//    }
+
+    public int getNumberRows(String table){
         try{
-            this.stmt = this.conn.prepareStatement("select * from " + table + " where id = ?");
-            stmt.setInt(1, id);
+            this.stmt = this.conn.prepareStatement("select * from " + table,ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = stmt.executeQuery();
-
-            // next() - 1 - 2 - 3 - 4 - 5
-
-            while(rs.next())
-            {
-                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                    arr.add(rs.getString(i));
-                }
+            if(rs.last()){
+                return rs.getRow();
+            } else {
+                return 0;
             }
-            return arr;
-        }catch (Exception e)
-        {
-            System.out.println("error => " + e);
-            return arr;
+        } catch (Exception e){
+            System.out.println(e);
+
+        }
+        return 0;
+    }
+    public int getNumberColumn(String table) {
+        try {
+            this.stmt = this.conn.prepareStatement("select * from " + table, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = stmt.executeQuery();
+            ResultSetMetaData count = rs.getMetaData();
+            int numOfCols = count.getColumnCount();
+            return numOfCols;
+
+        } catch (Exception e) {
+            System.out.println(e);
+            return 0;
+
         }
     }
+
+
 
 // Update account infos
     public boolean updateAccount(String table, String fullName, String username, String password)
@@ -170,9 +188,12 @@ public class Admin extends ConnexionDB{
             this.stmt = this.conn.prepareStatement("select * from promotion");
             ResultSet rs = stmt.executeQuery();
             int i = 0;
+            int a = getNumberRows("promotion");
+            int b = getNumberColumn("promotion");
+            String[][] arr2 = new String[a][b];
             while(rs.next())
             {
-                for(int j = 0; j < rs.getMetaData().getColumnCount(); j++)
+                for(int j = 0; j < b; j++)
                 {
                     arr2[i][j] = rs.getString(j+1);
                 }
@@ -183,7 +204,7 @@ public class Admin extends ConnexionDB{
         }catch (Exception e)
         {
             System.out.println("error => " + e);
-            return arr2;
+            return arrayVide;
         }
     }
 
