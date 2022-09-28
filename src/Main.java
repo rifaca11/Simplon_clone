@@ -9,12 +9,16 @@ public class Main {
 //        String[][] countTable = admin.selectAllPromos();
 //        System.out.println(Arrays.deepToString(countTable));
 
-//        insertion des briefs
-        Formateur formateur = new Formateur();
-        boolean rs = formateur.createBrief("margaret hamilton",5,3);
-        System.out.println(rs);
+//        Insertion des briefs
+//        Formateur formateur = new Formateur();
+//        boolean rs = formateur.createBrief("margaret hamilton",5,3);
+//        System.out.println(rs);
 
-//
+//        Display all briefs
+        Apprenant apprenant = new Apprenant();
+        String[][] rs = apprenant.selectAllBriefs();
+        System.out.println(Arrays.deepToString(rs));
+
 
     }
 }

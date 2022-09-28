@@ -5,6 +5,7 @@ public class Formateur extends ConnexionDB {
     private String fullName;
     private String password;
 
+
     public Formateur()
     {
         //
@@ -27,31 +28,6 @@ public class Formateur extends ConnexionDB {
         }
     }
 
-    public String[][] selectAllBriefs()
-    {
-        try{
-            this.stmt = this.conn.prepareStatement("select * from brief");
-            ResultSet rs = stmt.executeQuery();
-            int a = getNumberRows("brief");
-            int b = getNumberColumn("brief");
-            String[][] arr2 = new String[a][b];
 
-            int i = 0;
-            while(rs.next())
-            {
-                for(int j = 0; j < b; j++)
-                {
-                    arr2[i][j] = rs.getString(j+1);
-                }
-                i++;
-            }
-            rs.close();
-            return arr2;
-        }catch (Exception e)
-        {
-            System.out.println("error => " + e);
-            return arrayVide;
-        }
-    }
 
 }

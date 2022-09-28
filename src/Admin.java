@@ -78,7 +78,7 @@ public class Admin extends ConnexionDB{
 
     public int getNumberRows(String table){
         try{
-            this.stmt = this.conn.prepareStatement("select * from " + table,ResultSet.TYPE_SCROLL_INSENSITIVE,
+            stmt = conn.prepareStatement("select * from " + table,ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = stmt.executeQuery();
             if(rs.last()){
