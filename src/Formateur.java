@@ -28,6 +28,25 @@ public class Formateur extends ConnexionDB {
         }
     }
 
+    public boolean AddApprenantPromo(int idP,int id)
+    {
+        try{
+            this.stmt = this.conn.prepareStatement("update apprenant set idP = ? where id = ?");
+            stmt.setInt(1, idP);
+            stmt.setInt(2, id);
+            int rs = stmt.executeUpdate();
+            return rs == 1;
+        }catch(Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
+    }
+
+
+
+
+
 
 
 }

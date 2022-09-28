@@ -208,6 +208,21 @@ public class Admin extends ConnexionDB{
         }
     }
 
+    public boolean AddFormateurPromo(int idF,int id)
+    {
+        try{
+            this.stmt = this.conn.prepareStatement("update promotion set idF = ? where id = ?");
+            stmt.setInt(1, idF);
+            stmt.setInt(2, id);
+            int rs = stmt.executeUpdate();
+            return rs == 1;
+        }catch(Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
+    }
+
 
 
 }

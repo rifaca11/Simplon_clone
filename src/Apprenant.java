@@ -25,6 +25,7 @@ public class Apprenant extends ConnexionDB {
         }
     }
 
+//   Display briefs to students
     public String[][] selectAllBriefs()
     {
         try{
