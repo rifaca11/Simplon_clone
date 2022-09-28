@@ -95,7 +95,7 @@ public class Admin extends ConnexionDB{
     public int getNumberColumn(String table) {
         try {
             this.stmt = this.conn.prepareStatement("select * from " + table, ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE);
+            ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData count = rs.getMetaData();
             int numOfCols = count.getColumnCount();
@@ -207,5 +207,7 @@ public class Admin extends ConnexionDB{
             return arrayVide;
         }
     }
+
+
 
 }
