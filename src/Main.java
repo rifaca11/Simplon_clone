@@ -8,6 +8,7 @@ public class Main {
 //        Admin admin = new Admin();
 //        String[][] countTable = admin.selectAllPromos();
 //        System.out.println(Arrays.deepToString(countTable));
+q
 
 //        Insertion des briefs
 //        Formateur formateur = new Formateur();
