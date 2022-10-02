@@ -7,15 +7,15 @@ public class Main {
     public static void main(String[] args) {
 
 
-//        System.out.println("######| Login |######\n");
-//        System.out.println("1 ) - Admin");
-//        System.out.println("2 ) - Teacher");
-//        System.out.println("3 ) - Student");
+        System.out.println("######| Login |######\n");
+        System.out.println("1 ) - Admin");
+        System.out.println("2 ) - Teacher");
+        System.out.println("3 ) - Student");
 //
-//        Scanner s1 = new Scanner(System.in);
-//        System.out.print("|--> ");
-//        int choice = s1.nextInt();
-//        ChoiceMenu ChoiceMenu = new ChoiceMenu(choice, s1);
+        Scanner s1 = new Scanner(System.in);
+        System.out.print("|--> ");
+        int choice = s1.nextInt();
+        ChoiceMenu ChoiceMenu = new ChoiceMenu(choice, s1);
 
 
 //        display all promo
@@ -30,9 +30,9 @@ public class Main {
 //        System.out.println(rs);
 
        // Display all briefs
-        Apprenant apprenant = new Apprenant();
-        String[][] rs = apprenant.selectAllBriefs();
-        System.out.println(Arrays.deepToString(rs));
+//        Apprenant apprenant = new Apprenant();
+//        String[][] rs = apprenant.selectAllBriefs();
+//        System.out.println(Arrays.deepToString(rs));
 
 //        Add student in promo by formateur
 //          Formateur formateur = new Formateur();
@@ -44,6 +44,10 @@ public class Main {
 //          boolean rs = admin.AddFormateurPromo(4,3);
 //          System.out.println(rs);
 
+//            Admin admin = new Admin();
+//
+//            int a = admin.getNumberRows("brief");
+//            System.out.println(a);
 
 
 

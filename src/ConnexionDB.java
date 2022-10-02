@@ -14,7 +14,7 @@ public class ConnexionDB {
     {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            this.conn = DriverManager.getConnection(url, username, password);
+            conn = DriverManager.getConnection(url, username, password);
             // System.out.println("conn true");
         }catch(Exception e)
         {

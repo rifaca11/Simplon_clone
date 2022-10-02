@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Apprenant extends ConnexionDB {
 
@@ -6,7 +7,8 @@ public class Apprenant extends ConnexionDB {
     private String username;
     private String password;
     public Admin admin = new Admin();
-    protected String arrayVide[][] = new String[0][0];
+    protected String[][] arrayVide = new String[0][0];
+    protected ArrayList<String> arrayVidee = new ArrayList<>();
 
     public Apprenant()
     {
@@ -29,23 +31,19 @@ public class Apprenant extends ConnexionDB {
     public String[][] selectAllBriefs()
     {
         try{
-            stmt = conn.prepareStatement("select B.id,B.context,B.deadline,B.idP,P.id,P.name,P.status,P.idF,A.id,A.username,A.password,A.fullName,A.idP from brief B, promotion P,apprenant A where B.id = P.id and A.idP = P.id");
+            stmt = conn.prepareStatement("select DISTINCT B.context,B.idP,P.id,P.name,P.status,P.idF,A.idP from brief B, promotion P,apprenant A where B.idP = P.id and A.idP = P.id");
             ResultSet rs = stmt.executeQuery();
 
-            int a = admin.getNumberRows("brief");
+            int a = admin.getNumberRowsNotNull("brief");
 
-            int c = admin.getNumberColumn("brief");
-            int d = admin.getNumberColumn("promotion");
-            int e = admin.getNumberColumn("apprenant");
-
-            String[][] arr2 = new String[a][c+d+e];
+            String[][] arr2 = new String[a-1][7];
 
             int i = 0;
             while(rs.next())
             {
-                for(int j = 0; j < (c+d+e) ; j++)
+                for(int j = 0; j < 7; j++)
                 {
-                    arr2[i][j] = rs.getString(j+1);
+                    arr2[i][j] = (rs.getString(j+1));
                 }
                 i++;
             }

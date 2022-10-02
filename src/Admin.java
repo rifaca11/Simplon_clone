@@ -1,8 +1,5 @@
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class Admin extends ConnexionDB {
@@ -27,7 +24,7 @@ public class Admin extends ConnexionDB {
             int rs = stmt.executeUpdate();
             return rs == 1;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("error=> "+e);
             return false;
         }
     }
@@ -88,7 +85,7 @@ public class Admin extends ConnexionDB {
                 return 0;
             }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("error=> "+e);
 
         }
         return 0;
@@ -100,14 +97,28 @@ public class Admin extends ConnexionDB {
                     ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData count = rs.getMetaData();
-            int numOfCols = count.getColumnCount();
-            return numOfCols;
+            return count.getColumnCount();
 
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("error=> "+e);
             return 0;
 
         }
+    }
+    public int getNumberRowsNotNull(String table) {
+        try {
+            stmt = conn.prepareStatement("select * from "+table+" where idP IS NOT NULL ", ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.last()) {
+                return rs.getRow();
+            } else {
+                return 0;
+            }
+        } catch (Exception e) {
+            System.out.println("error=> "+e);
+        }
+        return 0;
     }
 
 
@@ -121,7 +132,7 @@ public class Admin extends ConnexionDB {
             int rs = stmt.executeUpdate();
             return rs == 1;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("error=> "+e);
             return false;
         }
     }

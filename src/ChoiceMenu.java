@@ -164,7 +164,6 @@ public class ChoiceMenu extends ConnexionDB{
                 {
                     // Declaration
                     Formateur teacher = new Formateur();
-
                     System.out.println("------------------------ Welcome " + username + " to your space account ------------------------");
                     System.out.println("1 => - Add Trainer to Promo");
                     System.out.println("2 => - Create a Brief");
@@ -189,21 +188,20 @@ public class ChoiceMenu extends ConnexionDB{
                     Scanner scanner = new Scanner(System.in);
                     System.out.print("Choice a number ");
                     String ifChoiceApprenant = scanner.nextLine();
+                    String[][] arr3 = apprenant.selectAllBriefs();
 
                     switch (ifChoiceApprenant){
                         case "1" -> {
-                            apprenant.selectAllBriefs();
-                            break;
+                            for (int i = 0; i < arr3.length; i++) {
+                                int j = 0;
+                                while (j < 1) {
+                                    System.out.println((i+1)+" - "+arr3[i][0]);
+                                    j++;
+                                }
+                            }
                         }
-                        case "2" -> {
-                            scanner.close();
-                            break;
-                        }
-
-                        default -> {
-                            System.out.println("you don't have any access to this platform");
-                            break;
-                        }
+                        case "2" -> scanner.close();
+                        default -> System.out.println("you don't have any access to this platform");
                     }
 
 
