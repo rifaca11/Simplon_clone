@@ -123,12 +123,13 @@ public class Admin extends ConnexionDB {
 
 
     // Update account infos
-    public boolean updateAccount(String table, String fullName, String username, String password) {
+    public boolean updateAccount(String table, String fullName, String username, String password,Integer id) {
         try {
-            stmt = conn.prepareStatement("update " + table + " set fullName = ?, username = ?, password = ?");
+            stmt = conn.prepareStatement("update " + table + " set fullName = ?, username = ?, password = ? where id= ?");
             stmt.setString(1, fullName);
             stmt.setString(2, username);
             stmt.setString(3, password);
+            stmt.setInt(4, id);
             int rs = stmt.executeUpdate();
             return rs == 1;
         } catch (Exception e) {

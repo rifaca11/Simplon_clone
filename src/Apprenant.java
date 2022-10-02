@@ -6,9 +6,11 @@ public class Apprenant extends ConnexionDB {
     private String fullName;
     private String username;
     private String password;
+    public String id;
     public Admin admin = new Admin();
     protected String[][] arrayVide = new String[0][0];
     protected ArrayList<String> arrayVidee = new ArrayList<>();
+
 
     public Apprenant()
     {
@@ -55,5 +57,72 @@ public class Apprenant extends ConnexionDB {
             return arrayVide;
         }
     }
+
+    public ArrayList<String> getTrainerNameStatus0()
+    {
+        try{
+            PreparedStatement stmt = conn.prepareStatement("select fullName from apprenant where status = 0");
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<String> arr = new ArrayList<>();
+            while (rs.next())
+            {
+                for(int i = 0; i < rs.getMetaData().getColumnCount(); i++)
+                {
+                    arr.add(rs.getString(i+1));
+                }
+            }
+            return arr;
+
+        }catch (Exception e)
+        {
+            System.out.println("error => "+e);
+            return arrayVidee;
+        }
+    }
+    public ArrayList<String> getTrainersName(int idP)
+    {
+        try{
+            PreparedStatement stmt = conn.prepareStatement("select fullName from apprenant where idP = ? ");
+            stmt.setInt(1, idP);
+            ResultSet rs = stmt.executeQuery();
+
+            ArrayList<String> arr = new ArrayList<>();
+            while (rs.next())
+            {
+                for(int i = 0; i < rs.getMetaData().getColumnCount(); i++)
+                {
+                    arr.add(rs.getString(i+1));
+                }
+            }
+            return arr;
+
+        }catch (Exception e)
+        {
+            System.out.println("error => "+e);
+            return arrayVidee;
+        }
+    }
+
+    public String getIdTrainer(String fullName)
+    {
+        try{
+            stmt = conn.prepareStatement("select id from apprenant where fullName = ?");
+            stmt.setString(1, fullName);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next())
+            {
+                id = rs.getString("id");
+            }
+            return id;
+        }catch(Exception e)
+        {
+            System.out.println("error => "+e);
+            return "0";
+        }
+    }
+
+
+
 
 }

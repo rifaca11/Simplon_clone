@@ -4,6 +4,23 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class ChoiceMenu extends ConnexionDB{
+    public Promotion promotion = new Promotion();
+    public Apprenant apprenant = new Apprenant();
+    public Admin admin = new Admin();
+
+    ArrayList<String> checkCountarr1 = new ArrayList<>();
+    //ArrayList<String> promosStatus0 = new ArrayList<>();
+    ArrayList<String> formateurStatus0 = new ArrayList<>();
+
+    ArrayList<String> checkCountarr = new ArrayList<>();
+
+    String count = admin.countPromosNot();
+    String[][] arr = admin.selectAllPromos();
+
+    // --- declaration ---
+    boolean a = true;
+    boolean b = true;
+
     public ChoiceMenu(int choice, Scanner s1)
     {
 
@@ -13,7 +30,7 @@ public class ChoiceMenu extends ConnexionDB{
         String username = s1.next();
         System.out.print("Enter password : |--> ");
         String password = s1.next();
-
+        Apprenant apprenant = new Apprenant();
         Sys systemApp = new Sys();
         boolean drop = true;
 // switch about choice
@@ -32,13 +49,13 @@ public class ChoiceMenu extends ConnexionDB{
                     System.out.println("3 => - Create a Promo");
                     System.out.println("-------------------------------------------------------------------------------------------------");
                     System.out.println("4 => - See list of promos");
-                    System.out.println("5 => - See list of accounts");
                     System.out.println("-------------------------------------------------------------------------------------------------");
-                    System.out.println("6 => - Add teacher in his promo");
-                    System.out.println("7 => - Update account's infos");
-                    System.out.println("8 => - Delete account");
+                    System.out.println("5 => - Add teacher in his promo");
+//                    System.out.println("6 => - Update teacher account ");
+//                    System.out.println("7 => - Update trainer account ");
+//                    System.out.println("8 => - Delete account");
                     System.out.println("-------------------------------------------------------------------------------------------------");
-                    System.out.println("9 => - Logout");
+                    System.out.println("6 => - Logout");
 
                     Scanner scanner = new Scanner(System.in);
                     System.out.print("Choice a number ");
@@ -66,19 +83,11 @@ public class ChoiceMenu extends ConnexionDB{
                         }
                         case "4" -> {
                             System.out.println("-----------------------------------------------------------");
-                            String count = admin.countPromosNot();
 
-                            // --- declaration ---
-                            ArrayList<String> checkCountarr = new ArrayList<>();
-                            ArrayList<String> checkCountarr1 = new ArrayList<>();
-                            //ArrayList<String> promosStatus0 = new ArrayList<>();
-                            ArrayList<String> formateurStatus0 = new ArrayList<>();
-                            boolean a = true;
-                            boolean b = true;
                             // -------------------
 
                             if (Integer.parseInt(count) != 0) {
-                                String[][] arr = admin.selectAllPromos();
+
                                 for (int i = 0; i < arr.length; i++) {
                                     for (int j = 0; j < 1; j++) {
                                         // check if status == 0
@@ -91,8 +100,16 @@ public class ChoiceMenu extends ConnexionDB{
                                         }
                                     }
                                 }
+                            }else {
+                                System.out.println("No Promo ...");
+                            }
+                            System.out.println("-----------------------------------------------------------");
+                        // End case
+                        }
 
-                                if (count.length() != 0) {
+                        case "5" ->{
+
+                                     if (count.length() != 0) {
                                     System.out.println("choose a promo : ");
                                     String choixPromo = scanner.nextLine();
 
@@ -110,7 +127,7 @@ public class ChoiceMenu extends ConnexionDB{
                                         for (int i = 0; i < arr1.length; i++) {
                                             for (int j = 0; j < 1; j++) {
                                                 // check if status == 0
-                                                if (arr1[i][5].equals("0")) {
+                                                  if (arr1[i][5].equals("0")) {
                                                     // Show All former names (status = 0)
                                                     System.out.println((i + 1) + " ) - " + arr1[i][1]);
                                                     formateurStatus0.add(arr1[i][1]);
@@ -150,18 +167,26 @@ public class ChoiceMenu extends ConnexionDB{
                                 } else {
                                     System.out.println("--> No promo found ...");
                                 }
-                            } else {
-                                System.out.println("No Promo ...");
-                            }
-                            System.out.println("-----------------------------------------------------------");
                         }
+
+                        case "6" ->{
+                            scanner.close();
+                        }
+                        default -> {
+                            System.out.println("you don't have any access to this platform");
+                        }
+
+
+//                        End switch
                     }
                 }
             }
-            case 2:
-            {
-                if(systemApp.login(username, password, "formateur"))
-                {
+            case 2: {
+                if (systemApp.login(username, password, "formateur")) {
+                    String promo = promotion.getPromoName(Integer.parseInt(promotion.getTeacherId(username)));
+                    String ifPromoExist = promo.length() > 0 ? promo : "";
+
+
                     // Declaration
                     Formateur teacher = new Formateur();
                     System.out.println("------------------------ Welcome " + username + " to your space account ------------------------");
@@ -170,17 +195,73 @@ public class ChoiceMenu extends ConnexionDB{
                     System.out.println("3 => - List of students promo");
                     System.out.println("4 => - Logout");
 
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.print("Choice a number ");
+                    String ifChoiceTeacher = scanner.nextLine();
+
+                    switch (ifChoiceTeacher) {
+                        case "1" -> {
+
+                            ArrayList<String> getTrainerNameStatus0 = apprenant.getTrainerNameStatus0();
+                            for (int i = 0; i < getTrainerNameStatus0.size(); i++) {
+                                System.out.println((i + 1) + " ) - " + getTrainerNameStatus0.get(i));
+                            }
+                            System.out.println("choose a Student to be assigned to promo | " + promo + " |");
+                            String teacherChoice = scanner.nextLine();
+                            String getIdTrainer = apprenant.getIdTrainer(getTrainerNameStatus0.get(Integer.parseInt(teacherChoice) - 1));
+
+                            teacher.AddApprenantPromo(Integer.parseInt(promotion.getPromoId(promo)), Integer.parseInt(getIdTrainer));
+
+                            drop = false;
+                        }
+                        case "2" -> {
+                            System.out.println("Create a Brief -------- |");
+                            System.out.print("Context : ");
+                            String context = scanner.nextLine();
+                            System.out.print("Deadline : ");
+                            String deadline = scanner.nextLine();
+                            scanner.close();
+
+                            // condition choix
+                            if(!context.isEmpty() && !deadline.isEmpty())
+                            {
+                                teacher.createBrief(context, Integer.parseInt(deadline), Integer.parseInt(promotion.getPromoId(promo)));
+                            }else{
+                                System.out.println("pls enter correct fields");
+                            }
+                            drop = false;
+
+                        }
+                        case "3" ->{
+                            ArrayList<String> trainers = apprenant.getTrainersName(Integer.parseInt(promotion.getPromoId(promo)));
+                            System.out.println("Students --------> | "+ifPromoExist+" |");
+                            for(String trainer : trainers)
+                            {
+                                System.out.println("- "+trainer);
+                            }
+                            drop = false;
+                        }
+                        case "4" ->{
+                            scanner.close();
+                        }
+                        default -> {
+                            System.out.println("you don't have any access to this platform");
+                        }
+
+
+                    }
                 }else{
-                    System.out.println("filed to connect in your teacher's account");
+                        System.out.println("filed to connect in your teacher's account");
+                    }
+                    break;
                 }
-                break;
-            }
+
             case 3:
             {
                 if(systemApp.login(username, password, "apprenant"))
                 {
                     // Declaration
-                    Apprenant apprenant = new Apprenant();
+
 
                     System.out.println("-------------| Welcome " + username + " |-------------");
                     System.out.println("1 => - Briefs");
@@ -218,3 +299,4 @@ public class ChoiceMenu extends ConnexionDB{
         }
     }
 }
+
