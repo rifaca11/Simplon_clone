@@ -29,20 +29,21 @@ public class Apprenant extends ConnexionDB {
     public String[][] selectAllBriefs()
     {
         try{
-            this.stmt = this.conn.prepareStatement("select B.id,B.context,B.deadline,B.idP,P.id,P.name,P.idF from brief B, promotion P where B.id = P.id");
+            stmt = conn.prepareStatement("select B.id,B.context,B.deadline,B.idP,P.id,P.name,P.status,P.idF,A.id,A.username,A.password,A.fullName,A.idP from brief B, promotion P,apprenant A where B.id = P.id and A.idP = P.id");
             ResultSet rs = stmt.executeQuery();
 
             int a = admin.getNumberRows("brief");
 
             int c = admin.getNumberColumn("brief");
             int d = admin.getNumberColumn("promotion");
+            int e = admin.getNumberColumn("apprenant");
 
-            String[][] arr2 = new String[a][c+d];
+            String[][] arr2 = new String[a][c+d+e];
 
             int i = 0;
             while(rs.next())
             {
-                for(int j = 0; j < c+d; j++)
+                for(int j = 0; j < (c+d+e) ; j++)
                 {
                     arr2[i][j] = rs.getString(j+1);
                 }

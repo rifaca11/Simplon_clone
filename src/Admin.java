@@ -10,7 +10,7 @@ public class Admin extends ConnexionDB {
     private String username;
     private String password;
     private String email;
-    protected String arrayVide[][] = new String[0][0];
+    protected String[][] arrayVide = new String[0][0];
     protected ArrayList<String> arr = new ArrayList<String>();
 
     public Admin() {
@@ -20,7 +20,7 @@ public class Admin extends ConnexionDB {
     //creation of any account ( formateur / apprenant )
     public boolean createAccount(String table, String fullName, String username, String password) {
         try {
-            this.stmt = this.conn.prepareStatement("insert into " + table + " (fullName, username, password) values (?, ?, ?)");
+            stmt = conn.prepareStatement("insert into " + table + " (fullName, username, password) values (?, ?, ?)");
             stmt.setString(1, fullName);
             stmt.setString(2, username);
             stmt.setString(3, password);
@@ -35,7 +35,7 @@ public class Admin extends ConnexionDB {
     // Display All accounts
     public String[][] selectAllAccounts(String table) {
         try {
-            this.stmt = this.conn.prepareStatement("select * from " + table);
+            stmt = conn.prepareStatement("select * from " + table);
             ResultSet rs = stmt.executeQuery();
             int a = getNumberRows(table);
             int b = getNumberColumn(table);
@@ -59,7 +59,7 @@ public class Admin extends ConnexionDB {
     // Display account by id
     public ArrayList<String> selectOneAccount(String table, int id) {
         try {
-            this.stmt = this.conn.prepareStatement("select * from " + table + " where id = ?");
+            stmt = conn.prepareStatement("select * from " + table + " where id = ?");
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
@@ -96,7 +96,7 @@ public class Admin extends ConnexionDB {
 
     public int getNumberColumn(String table) {
         try {
-            this.stmt = this.conn.prepareStatement("select * from " + table, ResultSet.TYPE_SCROLL_INSENSITIVE,
+            stmt = conn.prepareStatement("select * from " + table, ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData count = rs.getMetaData();
@@ -114,7 +114,7 @@ public class Admin extends ConnexionDB {
     // Update account infos
     public boolean updateAccount(String table, String fullName, String username, String password) {
         try {
-            this.stmt = this.conn.prepareStatement("update " + table + " set fullName = ?, username = ?, password = ?");
+            stmt = conn.prepareStatement("update " + table + " set fullName = ?, username = ?, password = ?");
             stmt.setString(1, fullName);
             stmt.setString(2, username);
             stmt.setString(3, password);
@@ -129,7 +129,7 @@ public class Admin extends ConnexionDB {
     // Delete account
     public boolean deleteAccount(String table, int id) {
         try {
-            this.stmt = this.conn.prepareStatement("delete from " + table + " where id = ?");
+            stmt = conn.prepareStatement("delete from " + table + " where id = ?");
             stmt.setInt(1, id);
             int rs = stmt.executeUpdate();
             return rs == 1;
@@ -142,7 +142,7 @@ public class Admin extends ConnexionDB {
     //    create promo
     public boolean createPromo(String name) {
         try {
-            this.stmt = this.conn.prepareStatement("insert into promotion (name) values (?)");
+            stmt = conn.prepareStatement("insert into promotion (name) values (?)");
             stmt.setString(1, name);
             int rs = stmt.executeUpdate();
             return rs == 1;
@@ -155,7 +155,7 @@ public class Admin extends ConnexionDB {
     //    Display Promos by id
     public ArrayList<String> selectPromo(int id) {
         try {
-            this.stmt = this.conn.prepareStatement("select * from promotion where id = ?");
+            stmt = conn.prepareStatement("select * from promotion where id = ?");
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
@@ -176,7 +176,7 @@ public class Admin extends ConnexionDB {
     //    Display All promo
     public String[][] selectAllPromos() {
         try {
-            this.stmt = this.conn.prepareStatement("select * from promotion");
+            stmt = conn.prepareStatement("select * from promotion");
             ResultSet rs = stmt.executeQuery();
             int i = 0;
             int a = getNumberRows("promotion");
@@ -199,7 +199,7 @@ public class Admin extends ConnexionDB {
     //    add teacher to promo
     public boolean AddFormateurPromo(int idF, int id) {
         try {
-            this.stmt = this.conn.prepareStatement("update promotion set idF = ? where id = ?");
+            stmt = conn.prepareStatement("update promotion set idF = ? where id = ?");
             stmt.setInt(1, idF);
             stmt.setInt(2, id);
             int rs = stmt.executeUpdate();
@@ -213,7 +213,7 @@ public class Admin extends ConnexionDB {
     public String getIdPromo(String name) {
         try {
             String id = "0";
-            this.stmt = this.conn.prepareStatement("select id from promotion where name = ?");
+            stmt = conn.prepareStatement("select id from promotion where name = ?");
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
             while(rs.next())
@@ -231,7 +231,7 @@ public class Admin extends ConnexionDB {
     public String getIdTeacher(String name) {
         try {
             String id = "0";
-            this.stmt = this.conn.prepareStatement("select id from formateur where name = ?");
+            stmt = conn.prepareStatement("select id from formateur where name = ?");
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
             while(rs.next())
@@ -243,6 +243,39 @@ public class Admin extends ConnexionDB {
         {
             System.out.println("error => "+e);
             return "0";
+        }
+    }
+
+    public String countPromosNot()
+    {
+        try{
+            stmt = conn.prepareStatement("select count(*) from promotion where status = 0");
+            ResultSet rs = stmt.executeQuery();
+            String count = "0";
+            while(rs.next())
+            {
+                count = rs.getString(1);
+            }
+            return count;
+        }catch(Exception e)
+        {
+            System.out.println("error => " + e);
+            return "false";
+        }
+    }
+
+
+    public boolean updateStatusteacher(int idF)
+    {
+        try{
+            stmt = conn.prepareStatement("update formateur set status = 1 where id = ?");
+            stmt.setInt(1, idF);
+            int rs = stmt.executeUpdate();
+            return rs == 1;
+        }catch(Exception e)
+        {
+            System.out.println("error => " + e);
+            return false;
         }
     }
 

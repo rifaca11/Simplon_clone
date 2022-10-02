@@ -15,7 +15,7 @@ public class Formateur extends ConnexionDB {
     public boolean createBrief(String context, int deadline, int idP)
     {
         try{
-            this.stmt = this.conn.prepareStatement("insert into brief (context, deadline, idP) values (?, ?, ?)");
+            stmt = conn.prepareStatement("insert into brief (context, deadline, idP) values (?, ?, ?)");
             stmt.setString(1, context);
             stmt.setInt(2, deadline);
             stmt.setInt(3, idP);
@@ -31,7 +31,7 @@ public class Formateur extends ConnexionDB {
     public boolean AddApprenantPromo(int idP,int id)
     {
         try{
-            this.stmt = this.conn.prepareStatement("update apprenant set idP = ? where id = ?");
+            stmt = conn.prepareStatement("update apprenant set idP = ? where id = ?");
             stmt.setInt(1, idP);
             stmt.setInt(2, id);
             int rs = stmt.executeUpdate();
