@@ -47,12 +47,25 @@ public class Formateur extends ConnexionDB {
         }
     }
 
+    public ArrayList<String> selectAllEmailsInPromo(int idP)
+    {
+        try{
+            stmt = conn.prepareStatement("select email from apprenant where idP = ?");
+            stmt.setInt(1, idP);
+            ResultSet rs = stmt.executeQuery();
 
-
-
-
-
-
+            // next() - 1 - 2 - 3 - 4 - 5
+            ArrayList<String> arr = new ArrayList<>();
+            while (rs.next()) {
+                arr.add(rs.getString("email"));
+            }
+            return arr;
+        }catch(Exception e)
+        {
+            System.out.println("error => "+e);
+            return arrayVidee;
+        }
+    }
 
 
 

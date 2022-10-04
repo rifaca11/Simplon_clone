@@ -23,7 +23,6 @@ public class ChoiceMenu extends ConnexionDB{
 
     public ChoiceMenu(int choice, Scanner s1)
     {
-
         System.out.println("------------------------ WELCOME TO SIMPLON ------------------------");
         System.out.println("-------------------------collaborative learning platform in active pedagogy------------------------");
         System.out.print("----------------- Enter your username : ----------------- ");
@@ -72,8 +71,10 @@ public class ChoiceMenu extends ConnexionDB{
                             String usernameInput = scanner.nextLine();
                             System.out.print("password : ");
                             String passwordInput = scanner.nextLine();
+                            System.out.print("email : ");
+                            String emailInput = scanner.nextLine();
                             scanner.close();
-                            admin.createAccount(table, fullNameInput, usernameInput, passwordInput);
+                            admin.createAccount(table, fullNameInput, usernameInput, passwordInput, emailInput);
                         }
                         case "3" -> {
                             System.out.println("Create a Promo -------- |");
@@ -180,11 +181,12 @@ public class ChoiceMenu extends ConnexionDB{
 //                        End switch
                     }
                 }
+                break;
             }
             case 2: {
                 if (systemApp.login(username, password, "formateur")) {
                     String promo = promotion.getPromoName(Integer.parseInt(promotion.getTeacherId(username)));
-                    String ifPromoExist = promo.length() > 0 ? promo : "";
+                    //String ifPromoExist = promo.length() > 0 ? promo : "";
 
 
                     // Declaration
@@ -198,6 +200,8 @@ public class ChoiceMenu extends ConnexionDB{
                     Scanner scanner = new Scanner(System.in);
                     System.out.print("Choice a number ");
                     String ifChoiceTeacher = scanner.nextLine();
+
+                    ArrayList<String> arr = teacher.selectAllEmailsInPromo(Integer.parseInt(promotion.getTeacherId(username)));
 
                     switch (ifChoiceTeacher) {
                         case "1" -> {
@@ -226,15 +230,18 @@ public class ChoiceMenu extends ConnexionDB{
                             if(!context.isEmpty() && !deadline.isEmpty())
                             {
                                 teacher.createBrief(context, Integer.parseInt(deadline), Integer.parseInt(promotion.getPromoId(promo)));
+                                for(String s : arr)
+                                {
+                                    Email.sendEmail(s, "Simplon :New Brief has been added ");
+                                }
                             }else{
                                 System.out.println("pls enter correct fields");
                             }
                             drop = false;
-
                         }
                         case "3" ->{
                             ArrayList<String> trainers = apprenant.getTrainersName(Integer.parseInt(promotion.getPromoId(promo)));
-                            System.out.println("Students --------> | "+ifPromoExist+" |");
+                            System.out.println("Students --------> | "+"ifPromoExist"+" |");
                             for(String trainer : trainers)
                             {
                                 System.out.println("- "+trainer);
@@ -247,8 +254,6 @@ public class ChoiceMenu extends ConnexionDB{
                         default -> {
                             System.out.println("you don't have any access to this platform");
                         }
-
-
                     }
                 }else{
                         System.out.println("filed to connect in your teacher's account");
@@ -260,9 +265,6 @@ public class ChoiceMenu extends ConnexionDB{
             {
                 if(systemApp.login(username, password, "apprenant"))
                 {
-                    // Declaration
-
-
                     System.out.println("-------------| Welcome " + username + " |-------------");
                     System.out.println("1 => - Briefs");
                     System.out.println("2 => - Logout");
@@ -284,7 +286,6 @@ public class ChoiceMenu extends ConnexionDB{
                         case "2" -> scanner.close();
                         default -> System.out.println("you don't have any access to this platform");
                     }
-
 
                 }else{
                     System.out.println("filed to connect in your Apprenant's account");

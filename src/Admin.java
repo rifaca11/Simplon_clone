@@ -15,12 +15,13 @@ public class Admin extends ConnexionDB {
     }
 
     //creation of any account ( formateur / apprenant )
-    public boolean createAccount(String table, String fullName, String username, String password) {
+    public boolean createAccount(String table, String fullName, String username, String password, String email) {
         try {
-            stmt = conn.prepareStatement("insert into " + table + " (fullName, username, password) values (?, ?, ?)");
+            stmt = conn.prepareStatement("insert into " + table + " (fullName, username, password, email) values (?, ?, ?, ?)");
             stmt.setString(1, fullName);
             stmt.setString(2, username);
             stmt.setString(3, password);
+            stmt.setString(4, email);
             int rs = stmt.executeUpdate();
             return rs == 1;
         } catch (Exception e) {

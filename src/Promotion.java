@@ -57,13 +57,12 @@ public class Promotion extends ConnexionDB{
             stmt = conn.prepareStatement("select id from promotion where name = ?");
             stmt.setString(1, promoName);
             ResultSet rs = stmt.executeQuery();
-            String id = "init";
 
             while(rs.next())
             {
-                id = rs.getString(1);
+                this.id = rs.getString(1);
             }
-            return id;
+            return this.id;
         }catch(Exception e)
         {
             System.out.println("error => "+e);
