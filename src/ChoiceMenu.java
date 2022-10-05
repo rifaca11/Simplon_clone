@@ -9,7 +9,6 @@ public class ChoiceMenu extends ConnexionDB{
     public Admin admin = new Admin();
 
     ArrayList<String> checkCountarr1 = new ArrayList<>();
-    //ArrayList<String> promosStatus0 = new ArrayList<>();
     ArrayList<String> formateurStatus0 = new ArrayList<>();
 
     ArrayList<String> checkCountarr = new ArrayList<>();
@@ -32,6 +31,7 @@ public class ChoiceMenu extends ConnexionDB{
         Apprenant apprenant = new Apprenant();
         Sys systemApp = new Sys();
         boolean drop = true;
+
 // switch about choice
         switch (choice)
         {
@@ -61,7 +61,7 @@ public class ChoiceMenu extends ConnexionDB{
                     String ifChoiceAdmin = scanner.nextLine();
 
                     switch (ifChoiceAdmin) {
-                        case "1", "2" -> {
+                        case "1", "2" :{
                             String type = ifChoiceAdmin.equals("1") ? "teacher" : "Student";
                             String table = type.equals("teacher") ? "formateur" : "apprenant";
                             System.out.println("Create a " + type + " account -------- |");
@@ -75,14 +75,16 @@ public class ChoiceMenu extends ConnexionDB{
                             String emailInput = scanner.nextLine();
                             scanner.close();
                             admin.createAccount(table, fullNameInput, usernameInput, passwordInput, emailInput);
+                            break;
                         }
-                        case "3" -> {
+                        case "3" : {
                             System.out.println("Create a Promo -------- |");
                             System.out.println("Promo Name : ");
                             String promoName = scanner.nextLine();
                             admin.createPromo(promoName);
+                            break;
                         }
-                        case "4" -> {
+                        case "4" : {
                             System.out.println("-----------------------------------------------------------");
 
                             // -------------------
@@ -105,10 +107,11 @@ public class ChoiceMenu extends ConnexionDB{
                                 System.out.println("No Promo ...");
                             }
                             System.out.println("-----------------------------------------------------------");
+                            break;
                         // End case
                         }
 
-                        case "5" ->{
+                        case "5" :{
 
                                      if (count.length() != 0) {
                                     System.out.println("choose a promo : ");
@@ -168,12 +171,14 @@ public class ChoiceMenu extends ConnexionDB{
                                 } else {
                                     System.out.println("--> No promo found ...");
                                 }
+                                     break;
                         }
 
-                        case "6" ->{
+                        case "6" :{
                             scanner.close();
+                            break;
                         }
-                        default -> {
+                        default : {
                             System.out.println("you don't have any access to this platform");
                         }
 
@@ -204,7 +209,7 @@ public class ChoiceMenu extends ConnexionDB{
                     ArrayList<String> arr = teacher.selectAllEmailsInPromo(Integer.parseInt(promotion.getTeacherId(username)));
 
                     switch (ifChoiceTeacher) {
-                        case "1" -> {
+                        case "1" : {
 
                             ArrayList<String> getTrainerNameStatus0 = apprenant.getTrainerNameStatus0();
                             for (int i = 0; i < getTrainerNameStatus0.size(); i++) {
@@ -217,8 +222,9 @@ public class ChoiceMenu extends ConnexionDB{
                             teacher.AddApprenantPromo(Integer.parseInt(promotion.getPromoId(promo)), Integer.parseInt(getIdTrainer));
 
                             drop = false;
+                            break;
                         }
-                        case "2" -> {
+                        case "2" : {
                             System.out.println("Create a Brief -------- |");
                             System.out.print("Context : ");
                             String context = scanner.nextLine();
@@ -226,7 +232,7 @@ public class ChoiceMenu extends ConnexionDB{
                             String deadline = scanner.nextLine();
                             scanner.close();
 
-                            // condition choix
+
                             if(!context.isEmpty() && !deadline.isEmpty())
                             {
                                 teacher.createBrief(context, Integer.parseInt(deadline), Integer.parseInt(promotion.getPromoId(promo)));
@@ -238,8 +244,9 @@ public class ChoiceMenu extends ConnexionDB{
                                 System.out.println("pls enter correct fields");
                             }
                             drop = false;
+                            break;
                         }
-                        case "3" ->{
+                        case "3" :{
                             ArrayList<String> trainers = apprenant.getTrainersName(Integer.parseInt(promotion.getPromoId(promo)));
                             System.out.println("Students --------> | "+"ifPromoExist"+" |");
                             for(String trainer : trainers)
@@ -247,11 +254,13 @@ public class ChoiceMenu extends ConnexionDB{
                                 System.out.println("- "+trainer);
                             }
                             drop = false;
+                            break;
                         }
-                        case "4" ->{
+                        case "4" :{
                             scanner.close();
+                            break;
                         }
-                        default -> {
+                        default : {
                             System.out.println("you don't have any access to this platform");
                         }
                     }
@@ -274,7 +283,7 @@ public class ChoiceMenu extends ConnexionDB{
                     String[][] arr3 = apprenant.selectAllBriefs();
 
                     switch (ifChoiceApprenant){
-                        case "1" -> {
+                        case "1" : {
                             for (int i = 0; i < arr3.length; i++) {
                                 int j = 0;
                                 while (j < 1) {
@@ -282,9 +291,10 @@ public class ChoiceMenu extends ConnexionDB{
                                     j++;
                                 }
                             }
+                            break;
                         }
-                        case "2" -> scanner.close();
-                        default -> System.out.println("you don't have any access to this platform");
+                        case "2" : scanner.close();break;
+                        default : System.out.println("you don't have any access to this platform");
                     }
 
                 }else{
