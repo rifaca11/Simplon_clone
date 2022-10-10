@@ -4,13 +4,13 @@ import java.util.ArrayList;
 public class Apprenant extends ConnexionDB {
 
     private String fullName;
-    private String username;
+    public String username;
     private String password;
     public String id;
     public Admin admin = new Admin();
     protected String[][] arrayVide = new String[0][0];
     protected ArrayList<String> arrayVidee = new ArrayList<>();
-
+    public ArrayList<String> arr = new ArrayList<>();
 
     public Apprenant()
     {
@@ -30,6 +30,31 @@ public class Apprenant extends ConnexionDB {
     }
 
 //   Display briefs to students
+
+    // 1 - method :  select * from brief where idP = ?
+    // 2 - method :  select id from apprenant where username = ? (usernameApprenant)
+    // 3 - method :  joins promo | apprenant = ? and id
+
+    public ArrayList<String> studentName(){
+        try{
+            stmt = conn.prepareStatement("select fullName from apprenant where status = 0");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+            {
+                for(int i = 0; i < rs.getMetaData().getColumnCount(); i++)
+                {
+                    arr.add(rs.getString(i+1));
+                }
+            }
+            return arr;
+
+        }catch (Exception e)
+        {
+            System.out.println("error => "+e);
+            return arrayVidee;
+        }
+    }
+
     public String[][] selectAllBriefs()
     {
         try{
@@ -122,6 +147,49 @@ public class Apprenant extends ConnexionDB {
         }
     }
 
+    public String[][] getBriefs(int idP)
+    {
+        try{
+            this.stmt = this.conn.prepareStatement("select * from brief where idP = ? ");
+            stmt.setInt(1, idP);
+            ResultSet rs = stmt.executeQuery();
+            int a = admin.getNumberRows("brief");
+            int b = admin.getNumberColumn("brief");
+            String[][] briefs = new String[a][b];
+            int i = 0;
+            while(rs.next())
+            {
+                for(int j= 0; j < b; j++)
+                {
+                    briefs[i][j] = rs.getString(j+1);
+                }
+                i++;
+            }
+            return briefs;
+        }catch(Exception e)
+        {
+            System.out.println("error => "+e);
+            return arrayVide;
+        }
+    }
+
+    public String studentId(String username)
+    {
+        try {
+            this.stmt = this.conn.prepareStatement("select idP from apprenant where username = ?");
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+            {
+                this.id = rs.getString("idP");
+            }
+            return this.id;
+        }catch (Exception e)
+        {
+            System.out.println("Error => "+e);
+            return "0";
+        }
+    }
 
 
 

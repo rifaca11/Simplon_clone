@@ -1,12 +1,12 @@
-import java.awt.Menu;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
+
+
     public static void main(String[] args) {
-
-
+//
+//
         System.out.println("######| Login |######\n");
         System.out.println("1 ) - Admin");
         System.out.println("2 ) - Teacher");
@@ -17,6 +17,11 @@ public class Main {
         int choice = s1.nextInt();
         ChoiceMenu ChoiceMenu = new ChoiceMenu(choice, s1);
 
+
+
+//        Apprenant apprenant = new Apprenant();
+//        String studentId = apprenant.studentId("abdelhaq");
+//        System.out.println(studentId);
 
 //        display all promo
 //        Admin admin = new Admin();

@@ -218,7 +218,7 @@ public class Admin extends ConnexionDB {
             int rs = stmt.executeUpdate();
             return rs == 1;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("error =>" +e);
             return false;
         }
     }
@@ -244,12 +244,12 @@ public class Admin extends ConnexionDB {
     public String getIdTeacher(String name) {
         try {
             String id = "0";
-            stmt = conn.prepareStatement("select id from formateur where name = ?");
-            stmt.setString(1, name);
+            stmt = conn.prepareStatement("select id from formateur where fullname = ?");
+            stmt.setString(1,name);
             ResultSet rs = stmt.executeQuery();
             while(rs.next())
             {
-                id = rs.getString("id");
+                id = rs.getString(1);
             }
             return id;
         } catch (Exception e)
