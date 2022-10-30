@@ -55,9 +55,7 @@ public class ChoiceMenu extends ConnexionDB{
                         System.out.println("4 => - See list of promos");
                         System.out.println("-------------------------------------------------------------------------------------------------");
                         System.out.println("5 => - Add teacher in his promo");
-//                    System.out.println("6 => - Update teacher account ");
-//                    System.out.println("7 => - Update trainer account ");
-//                    System.out.println("8 => - Delete account");
+//
                         System.out.println("-------------------------------------------------------------------------------------------------");
                         System.out.println("6 => - Logout");
 
@@ -215,6 +213,7 @@ public class ChoiceMenu extends ConnexionDB{
 
                             case 6: {
                                 param = false;
+                                 Main.mainMenu();
                                 break;
                             }
                             default: {
@@ -268,7 +267,6 @@ public class ChoiceMenu extends ConnexionDB{
                                     String context = scanner.nextLine();
                                     System.out.print("Deadline : ");
                                     String deadline = scanner.nextLine();
-                                    scanner.close();
 
                                     if (!context.isEmpty() && !deadline.isEmpty()) {
                                         // teacher.createBrief(context, Integer.parseInt(deadline), Integer.parseInt(promotion.getPromoId(promo)));
@@ -292,6 +290,7 @@ public class ChoiceMenu extends ConnexionDB{
                             }
                             case "4": {
                                 param=false;
+                                Main.mainMenu();
                                 break;
                             }
                             default: {
@@ -320,14 +319,10 @@ public class ChoiceMenu extends ConnexionDB{
                             case "1": {
                                 String studentId = apprenant.studentId(username);
                                     if (studentId != null) {
-                                        String[][] getBriefs = apprenant.getBriefs(Integer.parseInt(studentId)); // if null
+                                        ArrayList<String> getBriefs = apprenant.getBriefs(Integer.parseInt(studentId));
                                         System.out.println("Briefs --------> |  ");
-//
-                                        for (int i = 0; i < getBriefs.length-1; i++) {
-                                            for (int j = 0; j < 1; j++){
-                                                    System.out.println((i + 1) + " - " + getBriefs[i][1]);
-
-                                            }
+                                        for(String b: getBriefs){
+                                            System.out.println("Context : "+b);
                                         }
 
                                     }
@@ -336,6 +331,7 @@ public class ChoiceMenu extends ConnexionDB{
                             }
                             case "2":
                                 param = false;
+                                Main.mainMenu();
                                 break;
                             default:
                                 System.out.println("you don't have any access to this platform");

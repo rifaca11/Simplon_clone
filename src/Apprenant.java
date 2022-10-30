@@ -147,36 +147,36 @@ public class Apprenant extends ConnexionDB {
         }
     }
 
-    public String[][] getBriefs(int idP)
+    public ArrayList<String> getBriefs(int idP)
     {
         try{
-            this.stmt = this.conn.prepareStatement("select * from brief where idP = ? ");
+            stmt = conn.prepareStatement("select * from brief where idP = ? ");
             stmt.setInt(1, idP);
             ResultSet rs = stmt.executeQuery();
-            int a = admin.getNumberRows("brief");
-            int b = admin.getNumberColumn("brief");
-            String[][] briefs = new String[a][b];
-            int i = 0;
+//            int a = admin.getNumberRows("brief");
+//            int b = admin.getNumberColumn("brief");
+//            int b = admin.getNumberColumn("brief");
+
+//            String[][] briefs = new String[a][b];
+            ArrayList<String> briefs = new ArrayList<>();
+
             while(rs.next())
             {
-                for(int j= 0; j < b; j++)
-                {
-                    briefs[i][j] = rs.getString(j+1);
-                }
-                i++;
+                briefs.add(rs.getString("context"));
             }
+            rs.close();
             return briefs;
         }catch(Exception e)
         {
             System.out.println("error => "+e);
-            return arrayVide;
+            return arrayVidee;
         }
     }
 
     public String studentId(String username)
     {
         try {
-            this.stmt = this.conn.prepareStatement("select idP from apprenant where username = ?");
+            stmt = conn.prepareStatement("select idP from apprenant where username = ?");
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
             while (rs.next())

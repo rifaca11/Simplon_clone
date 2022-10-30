@@ -4,8 +4,8 @@ import java.sql.*;
 // Infos BD
 public class ConnexionDB {
     final String url = "jdbc:mysql://localhost:3306/simplon_clone";
-    final String username = "root";
-    final String password = "";
+    final String username = "user1";
+    final String password = "root";
     protected static Connection conn;
     public static PreparedStatement stmt;
 
